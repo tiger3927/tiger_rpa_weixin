@@ -9,7 +9,7 @@
 - v0.5：步骤 5（公众号主页采集「文章 / 视频号」并按最近 N 天过滤）落地并独立成章；流程编排扩到 2→3→4→5；新增 `--stage feed`、`--days`、`--tabs`、`--max-scroll`
 - 主程序：`wechat_public_account.py`（本目录）
 - 当前覆盖：步骤 1（启动并进入微信）、步骤 2（窗口就绪：可见/非最小化/不越界）、步骤 3（回到正常主聊天窗）、步骤 4（搜公众号并点开主页）、步骤 5（主页采集列表并按天过滤）
-- 运行环境：`D:\miniconda3\envs\ufo\python.exe -X utf8`
+- 运行环境：Windows + 自己那个 conda 环境的 `python -X utf8`（本机环境名叫 `ufo`，换机自己建，别写绝对路径）
 
 ---
 
@@ -574,7 +574,7 @@ requests  Pillow  pywinauto  comtypes  pywin32  psutil  numpy
 cd "e:\Cloud\项目工作台\赛力斯信息采集项目\采集代码示例\wechat_mp\ufo_test"
 
 # 全流程（步骤1 → 2 → 3；带 --keyword 时自动接步骤 4 → 5）
-D:\miniconda3\envs\ufo\python.exe -X utf8 wechat_public_account.py --keyword 建约车评 --days 1
+python -X utf8 wechat_public_account.py --keyword 建约车评 --days 1
 
 # 单步
 ... wechat_public_account.py --stage launch
@@ -644,7 +644,7 @@ D:\miniconda3\envs\ufo\python.exe -X utf8 wechat_public_account.py --keyword 建
 
 | 环境变量（写在同目录 `.env`，模块导入时由 `_load_dotenv()` 读；同名环境变量优先） | 默认 | 说明 |
 |---|---|---|
-| `VL_BASE` | `http://119.84.39.2:11435/v1` | 视觉模型端点 |
+| `VL_BASE` | **无默认** | 视觉模型端点（填到 `/v1`）；真实地址只写本机 `.env`，代码和文档里都不留 |
 | `VL_MODEL` | `qwen3.8-27b` | 模型名 |
 | `VL_KEY` | **无默认** | 密钥，只在 `.env`（已 `.gitignore`）；缺了发请求前抛「缺 VL_KEY」。旧版曾内置在代码里，那份已进 git 历史（`441a1a7`），要作废只能轮换 |
 | `VL_THINKING` | `0` | 是否开启 thinking（判图不需要） |

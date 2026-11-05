@@ -26,7 +26,7 @@ LLM 决策协议（所有步骤共用）
 用法
 ----
     # 只跑步骤1：确认微信启动并进入主界面（含扫码轮询）
-    D:\\miniconda3\\envs\\ufo\\python.exe -X utf8 wechat_public_account.py --stage launch
+    python -X utf8 wechat_public_account.py --stage launch
 
     # 只跑步骤2：确认微信窗口可见、没最小化、没跑出屏幕（副屏也照常可操作，不搬窗口）
     python wechat_public_account.py --stage ready        # screen 是旧别名
@@ -102,7 +102,8 @@ def _load_dotenv(path: Path = ENV_FILE) -> int:
 
 LOADED_ENV_KEYS = _load_dotenv()
 
-VL_BASE = os.environ.get("VL_BASE", "http://119.84.39.2:11435/v1")
+# 端点不在代码里：真实地址只放本机 .env（已 gitignore），代码与文档里一律不写
+VL_BASE = os.environ.get("VL_BASE", "")
 # 密钥不在代码里：只从 .env / 环境变量取；缺了就在真正要调用时报清楚该往哪写
 VL_KEY = os.environ.get("VL_KEY", "")
 VL_MODEL = os.environ.get("VL_MODEL", "qwen3.8-27b")
@@ -112,6 +113,11 @@ VL_THINKING = os.environ.get("VL_THINKING", "0") not in ("0", "false", "False", 
 
 
 def _vl_headers() -> dict:
+    if not VL_BASE:
+        raise RuntimeError(
+            f"缺 VL_BASE：把视觉模型端点写进 {ENV_FILE}（一行 `VL_BASE=http://<host>:<port>/v1`）"
+            "或设同名环境变量；代码里不再内置真实地址"
+        )
     if not VL_KEY:
         raise RuntimeError(
             f"缺 VL_KEY：把密钥写进 {ENV_FILE}（一行 `VL_KEY=sk-...`）或设同名环境变量；"

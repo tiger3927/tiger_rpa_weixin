@@ -1,5 +1,6 @@
 # wechat_public_account.py 的依赖（Windows-only）
-# 装：D:\miniconda3\envs\ufo\python.exe -m pip install -r requirements.txt
+# 装：python -m pip install -r requirements.txt
+#     （用你自己 conda 环境里的解释器，先激活该环境再装；不要写死某个环境的绝对路径）
 # 不锁版本，装最新即可；出问题再按文末「实测通过环境」回退。
 
 # LLM 调用：视觉判图 /chat/completions 与纯文本整理（llm_json / llm_text_json）

@@ -53,11 +53,11 @@ python -X utf8 wechat_public_account.py --stage a11y --hot-gate # 体检 + 热�
 
 - **Windows**（pywin32 / UIA / 剪贴板，跨不了平台）；微信 4.x 已装（`Weixin.exe` / `WeChat.exe`，程序会按注册表 App Paths → Tencent InstallPath → 常见路径自己找，也可 `--wechat-exe` 指定）。
 - **Python 环境**：conda 环境 `ufo`（依赖见 `requirements.txt`，不锁版本）。命令里**只写 `python`**，由激活的环境决定；必须带 **`-X utf8`**，否则 Windows GBK 控制台打印中文会崩。
-- **视觉模型端点**（OpenAI 兼容）：配置放**同目录 `.env`**（已 `.gitignore`，模块导入时自动读，不用 source），同名环境变量可覆盖它（**环境变量优先**）。**密钥只在 `.env`，代码里一个字符都没有**：
+- **视觉模型端点**（OpenAI 兼容）：配置放**同目录 `.env`**（已 `.gitignore`，模块导入时自动读，不用 source），同名环境变量可覆盖它（**环境变量优先**）。**端点和密钥都只在 `.env`，代码和文档里一个真实地址都没有**：
 
 | 变量 | 默认 | 说明 |
 |---|---|---|
-| `VL_BASE` | `http://119.84.39.2:11435/v1` | 端点 |
+| `VL_BASE` | **无默认** | 端点（OpenAI 兼容，填到 `/v1`）；真实地址只写本机 `.env`，代码与文档里不留 |
 | `VL_MODEL` | `qwen3.8-27b` | 模型名 |
 | `VL_KEY` | **无默认** | 只从 `.env` / 环境变量取；缺了就在发请求前抛「缺 VL_KEY：写进 `.env`」。旧版本曾在代码里内置，那份密钥已进 git 历史（`441a1a7`），要彻底作废得轮换密钥 |
 | `VL_THINKING` | `0` | 判图不用长推理，默认关（开着会吃掉 `max_tokens` 导致 `content` 为空） |
@@ -65,15 +65,15 @@ python -X utf8 wechat_public_account.py --stage a11y --hot-gate # 体检 + 热�
 
 `.env` 里一行一个 `KEY=VALUE`，`#` 是注释，值两侧引号可选。加载器是标准库实现（`_load_dotenv()`），不依赖 `python-dotenv`。
 
-上手第一步——照模板建 `.env` 再填密钥（`.env` 不入库，`.env.example` 入库）：
+上手第一步——照模板建 `.env` 再填端点和密钥（`.env` 不入库，`.env.example` 入库且只给占位符）：
 
 ```bash
 copy .env.example .env          # Windows；macOS/Linux 用 cp .env.example .env
-# 编辑 .env，把 VL_KEY 换成自己的密钥，然后确认读到了：
+# 编辑 .env：VL_BASE 填你自己的端点（填到 /v1）、VL_KEY 填你自己的密钥，然后确认读到了：
 python -X utf8 wechat_public_account.py --stage probe
 ```
 
-`--stage probe` 会把 `key_set` / `env_file` / `env_keys_loaded` 打出来，一眼看出配置有没有读到（`key_set=false` 就是 `.env` 没建或 `VL_KEY` 还是占位符）。
+`--stage probe` 会把 `base` / `key_set` / `env_file` / `env_keys_loaded` 打出来，一眼看出配置有没有读到（`base` 为空就是 `VL_BASE` 没填，`key_set=false` 就是 `.env` 没建或 `VL_KEY` 还是占位符；缺任一个都会在发请求前抛错，不会拼出无效 URL）。
 
 - 依赖：`requests Pillow pywinauto comtypes pywin32 psutil numpy`。
 
