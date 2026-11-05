@@ -1,0 +1,11 @@
+# 密钥与本机配置：绝不入库
+.env
+.env.*
+!.env.example
+
+# 运行产物
+out/
+logs/
+screenshots/
+__pycache__/
+*.pyc

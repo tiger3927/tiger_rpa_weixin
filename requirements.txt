@@ -1,0 +1,33 @@
+# wechat_public_account.py 的依赖（Windows-only）
+# 装：D:\miniconda3\envs\ufo\python.exe -m pip install -r requirements.txt
+# 不锁版本，装最新即可；出问题再按文末「实测通过环境」回退。
+
+# LLM 调用：视觉判图 /chat/completions 与纯文本整理（llm_json / llm_text_json）
+requests
+
+# 截图与图像裁剪：ImageGrab.grab(all_screens=True) + Image.crop/save
+Pillow
+
+# UIA 枚举微信主窗（Desktop(backend="uia")）与键盘输入（keyboard.send_keys：Ctrl+A/Ctrl+C、Ctrl+W、Esc、方向键）
+pywinauto
+
+# pywinauto 的 UIA 后端必需（装 pywinauto 会自动带，这里显式列出防被裁掉）
+comtypes
+
+# Win32 主力：窗口/HWND 枚举与判定（win32gui）、消息与系统度量（win32con、win32api）、
+# 进程归属（win32process）、剪贴板取正文与还原用户剪贴板（win32clipboard）
+pywin32
+
+# 微信进程枚举与 CPU/内存体检（wechat_pids / 健康检查）
+psutil
+
+# 截图差分判「滚不动了」（_img_diff）与裁图/行聚类
+numpy
+
+# 只用标准库、不需要额外装：argparse base64 ctypes datetime difflib io json os re
+# subprocess sys time pathlib winreg（winreg 是标准库，读写微信注册表配置用）
+# tests/ 下所有脚本（含 test_merge_paragraphs.py）不引入本文件之外的依赖。
+
+# 实测通过环境（仅供参考，不做约束）：Python 3.10.22 +
+# requests 2.32.5 / Pillow 11.3.0 / pywinauto 0.6.8 / comtypes 1.2.0 /
+# pywin32 312 / psutil 5.9.8 / numpy 1.26.4（2026-11-03，conda env `ufo`）
